@@ -18,7 +18,7 @@ module.exports = {
       "type": "string",
       "required": false,
       "message": "Project description",
-      "default": "A Vue.js multi project"
+      "default": "A Vue.js project"
     },
     "author": {
       "type": "string",
@@ -40,6 +40,10 @@ module.exports = {
         }
       ]
     },
+    "router": {
+      "type": "confirm",
+      "message": "Install vue-router?"
+    },
     "lint": {
       "type": "confirm",
       "message": "Use ESLint to lint your code?"
@@ -50,7 +54,7 @@ module.exports = {
       "message": "Pick an ESLint preset",
       "choices": [
         {
-          "name": "Standard (https://github.com/feross/standard)",
+          "name": "Standard (https://github.com/standard/standard)",
           "value": "standard",
           "short": "Standard"
         },
@@ -68,7 +72,29 @@ module.exports = {
     },
     "unit": {
       "type": "confirm",
-      "message": "Setup unit tests with Karma + Mocha?"
+      "message": "Setup unit tests"
+    },
+    "runner": {
+      "when": "unit",
+      "type": "list",
+      "message": "Pick a test runner",
+      "choices": [
+        {
+          "name": "Jest",
+          "value": "jest",
+          "short": "jest"
+        },
+        {
+          "name": "Karma and Mocha",
+          "value": "karma",
+          "short": "karma"
+        },
+        {
+          "name": "none (configure it yourself)",
+          "value": "noTest",
+          "short": "noTest"
+        }
+      ]
     },
     "e2e": {
       "type": "confirm",
@@ -80,8 +106,12 @@ module.exports = {
     ".eslintignore": "lint",
     "config/test.env.js": "unit || e2e",
     "test/unit/**/*": "unit",
-    "build/webpack.test.conf.js": "unit",
+    "test/unit/index.js": "unit && runner === 'karma'",
+    "test/unit/karma.conf.js": "unit && runner === 'karma'",
+    "test/unit/specs/index.js": "unit && runner === 'karma'",
+    "test/unit/setup.js": "unit && runner === 'jest'",
     "test/e2e/**/*": "e2e",
+    "src/router/**/*": "router"
   },
-  "completeMessage": "To get started:\n\n  {{^inPlace}}cd {{destDirName}}\n  {{/inPlace}}npm install\n  npm run dev\n\nDocumentation can be found at https://github.com/QC-L/webpack-multi-page-template"
+  "completeMessage": "To get started:\n\n  {{^inPlace}}cd {{destDirName}}\n  {{/inPlace}}npm install\n  npm run dev\n\nDocumentation can be found at https://vuejs-templates.github.io/webpack"
 };
